@@ -24,18 +24,23 @@ Who can see what is enforced in the database, not just the app (`supabase/schema
 
 `supabase/tests/rls_test.sql` checks each of these against a local Postgres.
 
-## 1. Set up the database (about 15 minutes)
+## 1. The database
 
-1. Create a project at [supabase.com](https://supabase.com). Pick the Singapore region if it's offered, so customer data stays in Singapore.
-2. Open **SQL Editor**, paste the whole of `supabase/schema.sql` and run it. Then do the same with `supabase/seed.sql` (example prices and fees, all tagged "Example" in the app).
-3. **Authentication → Providers → Email**: keep Email enabled. Under **Email Templates → Magic Link**, make the email show the code by including `{{ .Token }}`, because the app signs people in with a 6-digit code.
-4. **Project Settings → API**: copy the Project URL and the `anon` public key.
-5. Sign in to the app once with your own email, then run this in the SQL Editor to make yourself the admin (use your email):
+The Supabase project `neighbour-fix` (Singapore region) is already set up with the schema, access rules and example prices. Its public URL and publishable key are in `.env.example`.
 
-   ```sql
-   update public.profiles set role = 'admin'
-   where id = (select id from auth.users where email = 'you@example.com');
-   ```
+Two steps are still yours, in the Supabase dashboard:
+
+1. **SQL Editor**: paste and run the account-deletion function (the `delete_my_account` block near the end of `supabase/schema.sql`). Apple requires in-app account deletion; until this runs, the app's "Delete my account" button shows an error.
+2. **Authentication → Emails → Magic Link**: make the email include `{{ .Token }}`, because the app signs people in with a 6-digit code.
+
+After you sign in to the app once, make yourself the admin (use your email):
+
+```sql
+update public.profiles set role = 'admin'
+where id = (select id from auth.users where email = 'you@example.com');
+```
+
+To rebuild from scratch in a new project, run `supabase/schema.sql` then `supabase/seed.sql` in the SQL Editor.
 
 ## 2. Run it on your iPhone (about 10 minutes)
 
@@ -44,7 +49,7 @@ You need Node.js on a computer and the free **Expo Go** app on your iPhone.
 ```bash
 git clone https://github.com/yencwu87-ui/neighbour-fix-app
 cd neighbour-fix-app
-cp .env.example .env      # paste your Supabase URL and anon key into .env
+cp .env.example .env      # already holds the project's public URL and key
 npm install
 npx expo start
 ```

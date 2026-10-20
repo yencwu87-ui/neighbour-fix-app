@@ -247,3 +247,9 @@ begin
 end $$;
 revoke all on function public.delete_my_account() from public, anon;
 grant execute on function public.delete_my_account() to authenticated;
+
+-- ---------- lock down trigger functions (flagged by Supabase's security advisor)
+-- Triggers still fire; the functions just can't be called directly from the API.
+revoke execute on function public.guard_request_update() from public, anon, authenticated;
+revoke execute on function public.handle_new_user() from public, anon, authenticated;
+revoke execute on function public.approve_application(uuid, boolean, boolean) from anon;
