@@ -31,7 +31,7 @@ The Supabase project `neighbour-fix` (Singapore region) is already set up with t
 Two steps are still yours, in the Supabase dashboard:
 
 1. **SQL Editor**: paste and run the account-deletion function (the `delete_my_account` block near the end of `supabase/schema.sql`). Apple requires in-app account deletion; until this runs, the app's "Delete my account" button shows an error.
-2. **Authentication → Emails → Magic Link**: make the email include `{{ .Token }}`, because the app signs people in with a 6-digit code.
+2. **Authentication → Sign In / Providers → Email**: turn **Confirm email** off while testing. The app signs people in with email and password, and Supabase's built-in email only reaches your own team's addresses. Before real customers sign up, connect your own email service (Authentication → Emails → Set up SMTP, for example Resend or Amazon SES with your own domain), then turn **Confirm email** back on.
 
 After you sign in to the app once, make yourself the admin (use your email):
 
