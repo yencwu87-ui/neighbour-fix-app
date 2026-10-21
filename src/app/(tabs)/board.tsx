@@ -46,7 +46,7 @@ export default function Board() {
   const shown = jobs.filter((j) => (filter === 'Open' ? !['done', 'cancelled'].includes(j.status) : j.status === filter.toLowerCase()));
 
   return (
-    <ScrollView style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
+    <ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
       refreshControl={<RefreshControl refreshing={loading} onRefresh={load} tintColor={c.accent} />}>
       <Title sub="Approve pros, match jobs and send itemised quotes.">Board</Title>
 

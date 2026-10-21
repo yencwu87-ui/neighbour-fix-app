@@ -48,7 +48,7 @@ export default function MyJobs() {
   const assigned = isPro ? jobs.filter((j) => j.customer_id !== session.user.id) : [];
 
   return (
-    <ScrollView style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
+    <ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
       refreshControl={<RefreshControl refreshing={loading} onRefresh={load} tintColor={c.accent} />}>
       <Title sub={isPro ? 'Jobs assigned to you, and anything you booked yourself.' : 'Your requests, quotes and finished jobs.'}>My jobs</Title>
       {error ? <Notice tone="crit">{error}</Notice> : null}

@@ -25,7 +25,7 @@ export default function Pros() {
     .sort((a, b) => (stats.data?.[b.id]?.rating ?? 0) - (stats.data?.[a.id]?.rating ?? 0));
 
   return (
-    <ScrollView style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
+    <ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
       refreshControl={<RefreshControl refreshing={pros.loading} onRefresh={() => { pros.reload(); stats.reload(); }} tintColor={c.accent} />}>
       <Title sub="Every licence below was checked by us on the date shown. Price ranges are labour only, before materials.">Checked pros near you</Title>
       <Chips options={KINDS} value={kind} onChange={setKind} />

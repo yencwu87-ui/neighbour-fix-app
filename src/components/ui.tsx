@@ -11,7 +11,7 @@ export function Screen({ children, scroll = true }: { children: React.ReactNode;
   const body = <View style={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}>{children}</View>;
   return (
     <SafeAreaView edges={['left', 'right']} style={{ flex: 1, backgroundColor: c.bg }}>
-      {scroll ? <ScrollView keyboardShouldPersistTaps="handled" contentInsetAdjustmentBehavior="automatic">{body}</ScrollView> : body}
+      {scroll ? <ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets contentInsetAdjustmentBehavior="automatic">{body}</ScrollView> : body}
     </SafeAreaView>
   );
 }
