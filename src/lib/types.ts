@@ -19,6 +19,8 @@ export type Pro = {
   note: string | null;
   origin: string | null;
   delivers: boolean | null;
+  active?: boolean;
+  available?: boolean;
   example: boolean;
 };
 

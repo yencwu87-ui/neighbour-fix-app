@@ -51,7 +51,7 @@ export function tradesOf(p: Pro): string[] {
 export function nearbyPros(pros: Pro[], trade: string, area: string, stats: Record<string, ProStat> = {}): Pro[] {
   const want = trade.toLowerCase();
   return pros
-    .filter((p) => p.kind !== 'supplier')
+    .filter((p) => p.kind !== 'supplier' && p.available !== false)
     .filter((p) => tradesOf(p).includes(want) || (want === 'other' && tradesOf(p).includes('handyman')))
     .filter((p) => (p.areas ?? []).includes(area))
     .sort((a, b) => (stats[b.id]?.rating ?? 0) - (stats[a.id]?.rating ?? 0));

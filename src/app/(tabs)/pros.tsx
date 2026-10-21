@@ -49,6 +49,7 @@ export default function Pros() {
               {p.kind === 'supplier' ? <Badge text={`Supplier in ${p.origin || 'Johor Bahru'}${p.delivers ? ', delivers to SG' : ', pickup only'}`} tone="brass" />
                 : p.licence_type ? <Badge text={`${p.licence_type}, checked ${p.licence_checked ?? ''}`} />
                 : <Badge text="No licence needed, references checked" tone="plain" />}
+              {p.available === false ? <Badge text="Not taking new jobs" tone="plain" /> : null}
               {p.materials_policy ? <Badge text={`Materials: ${p.materials_policy}`} tone="brass" /> : null}
             </Row>
             {(p.price_ranges ?? []).map((r) => <Line key={r.job} left={r.job} right={`${money(r.low)}–${money(r.high)}`} />)}

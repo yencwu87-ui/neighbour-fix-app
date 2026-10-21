@@ -29,6 +29,7 @@ export default function JobScreen() {
   const [markup, setMarkup] = useState('');
   const [fees, setFees] = useState<FeeLine[]>([]);
   const [busy, setBusy] = useState(false);
+  const [interestedIds, setInterestedIds] = useState<string[]>([]);
   const [msg, setMsg] = useState<{ text: string; tone: 'crit' | 'good' } | null>(null);
 
   async function load() {
@@ -36,6 +37,8 @@ export default function JobScreen() {
     if (error || !data) { setErr('This job could not be found, or you don\'t have access to it.'); return; }
     const j = data as JobRequest;
     setJob(j);
+    const { data: ints } = await supabase.from('job_interest').select('pro_id').eq('request_id', j.id);
+    setInterestedIds(((ints ?? []) as { pro_id: string }[]).map((x) => x.pro_id));
     const q = j.quote;
     if (q) {
       setCallout(String(q.callout || ''));
@@ -65,7 +68,8 @@ export default function JobScreen() {
     fees, markup: markup.trim(), commission_pct: Number(s?.commission_pct) || 0,
   };
   const t = quoteTotals(draft);
-  const suggested = nearbyPros(pros.data ?? [], job.category, job.area);
+  const interestedPros = (pros.data ?? []).filter((p) => interestedIds.includes(p.id));
+  const suggested = [...interestedPros, ...nearbyPros(pros.data ?? [], job.category, job.area).filter((p) => !interestedIds.includes(p.id))];
   const others = (pros.data ?? []).filter((p) => p.kind !== 'supplier' && !suggested.includes(p));
 
   async function update(patch: Partial<JobRequest>, ok: string) {
@@ -100,7 +104,7 @@ export default function JobScreen() {
               <Pressable key={p.id} onPress={() => update({ pro_id: p.id, status: job.status === 'new' ? 'matched' : job.status }, `Matched with ${p.name}`)}
                 accessibilityRole="radio" accessibilityState={{ selected: on }}
                 style={{ minHeight: 44, borderRadius: radius.sm, borderWidth: 1, borderColor: on ? c.accent : c.line, backgroundColor: on ? c.accentSoft : 'transparent', padding: 10 }}>
-                <Text style={{ color: c.ink, fontWeight: on ? '700' : '500' }}>{p.name}{suggested.includes(p) ? ' (suggested)' : ''}</Text>
+                <Text style={{ color: c.ink, fontWeight: on ? '700' : '500' }}>{p.name}{interestedIds.includes(p.id) ? ' (interested)' : suggested.includes(p) ? ' (suggested)' : ''}</Text>
                 <Small>{p.trade}, covers {(p.areas ?? []).join(', ')}{p.example ? ', example' : ''}</Small>
               </Pressable>
             );

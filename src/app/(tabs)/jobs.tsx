@@ -13,12 +13,11 @@ import type { JobRequest, Pro } from '../../lib/types';
 export default function MyJobs() {
   const c = useColors();
   const router = useRouter();
-  const { session, profile, signOut } = useAuth();
+  const { session, profile, pro, signOut } = useAuth();
   const [jobs, setJobs] = useState<JobRequest[]>([]);
   const [pros, setPros] = useState<Record<string, Pro>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const isPro = profile?.role === 'pro';
 
   const load = useCallback(async () => {
     if (!session) return;
@@ -46,28 +45,16 @@ export default function MyJobs() {
   }
 
   const mine = jobs.filter((j) => j.customer_id === session.user.id);
-  const assigned = isPro ? jobs.filter((j) => j.customer_id !== session.user.id) : [];
 
   return (
     <><KeyboardDoneBar /><ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
       refreshControl={<RefreshControl refreshing={loading} onRefresh={load} tintColor={c.accent} />}>
-      <Title sub={isPro ? 'Jobs assigned to you, and anything you booked yourself.' : 'Your requests, quotes and finished jobs.'}>My jobs</Title>
+      <Title sub="Your requests, quotes and finished jobs.">My jobs</Title>
       {error ? <Notice tone="crit">{error}</Notice> : null}
 
-      {isPro ? (
-        <View style={{ gap: space.sm }}>
-          <H2>Assigned to you</H2>
-          {assigned.length === 0 ? <Empty>No jobs assigned yet. New jobs near your areas will show up here.</Empty> : assigned.map((j) => (
-            <Pressable key={j.id} onPress={() => router.push({ pathname: '/job/[id]', params: { id: j.id } })} accessibilityRole="button"
-              style={{ backgroundColor: c.card, borderRadius: radius.md, borderWidth: 1, borderColor: c.line, padding: space.md, gap: 4 }}>
-              <Row style={{ justifyContent: 'space-between' }}><Text style={{ fontWeight: '600', color: c.ink, fontSize: 16, flex: 1 }}>{j.job_name ?? j.category}, {j.area}</Text><StatusPill status={j.status} /></Row>
-              <Small>{j.urgency}. {j.description.slice(0, 100)}</Small>
-            </Pressable>
-          ))}
-        </View>
-      ) : null}
+      {pro ? <Notice>Jobs you're doing as a pro are in the Work tab.</Notice> : null}
 
-      {mine.length === 0 && !isPro ? <Empty>No jobs yet. Book your first one from the Book tab.</Empty> : null}
+      {mine.length === 0 ? <Empty>No jobs yet. Book your first one from the Book tab.</Empty> : null}
       {mine.map((j) => <JobCard key={j.id} job={j} pro={j.pro_id ? pros[j.pro_id] : undefined} onChanged={load} />)}
 
       <View style={{ gap: 8, marginTop: space.lg }}>

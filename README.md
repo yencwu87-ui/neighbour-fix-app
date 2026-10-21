@@ -13,6 +13,7 @@ Built with Expo (React Native, SDK 57, so it runs in the App Store version of Ex
 | Pros | Everyone | Checked pros with licence and check date, filtered by type and area. "Join as a pro" for handymen and suppliers. |
 | My jobs | Customers and pros | Customers see quotes, rate finished jobs, cancel early requests and delete their account. Pros see jobs assigned to them. |
 | Prices | Everyone | Home care plan, renovation coordination, booking fees, what neighbours paid (anonymous totals), parts reference prices, JB landed-cost check. |
+| Work | Approved pros | Jobs near you in their trade and areas (customer name and phone hidden until assigned) with "I'm interested", jobs to quote, earnings and referral fee owed, and their profile: availability, areas, prices, materials policy. |
 | Board | Admin only | Approve pros after checking licence and references, match jobs, build itemised quotes, see earnings, edit fees. |
 
 Who can see what is enforced in the database, not just the app (`supabase/schema.sql`):
@@ -40,7 +41,7 @@ update public.profiles set role = 'admin'
 where id = (select id from auth.users where email = 'you@example.com');
 ```
 
-To rebuild from scratch in a new project, run `supabase/schema.sql` then `supabase/seed.sql` in the SQL Editor.
+To rebuild from scratch in a new project, run `supabase/schema.sql`, then `supabase/provider.sql`, then `supabase/seed.sql` in the SQL Editor.
 
 ## 2. Run it on your iPhone (about 10 minutes)
 
