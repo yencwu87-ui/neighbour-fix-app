@@ -2,7 +2,7 @@
 
 An iPhone and Android app that matches Singapore homeowners with handymen who have been personally checked, with itemised quotes (labour, materials and fees on separate lines) before any work starts.
 
-Built with Expo (React Native, SDK 58) and Supabase (Postgres with row-level security).
+Built with Expo (React Native, SDK 57, so it runs in the App Store version of Expo Go) and Supabase (Postgres with row-level security).
 
 ## What's in the app
 
