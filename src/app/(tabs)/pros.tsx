@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { RefreshControl, ScrollView, View } from 'react-native';
 import { Badge, Body, Button, Card, Chips, Empty, ExampleTag, H2, Line, Notice, Row, Small, Title } from '../../components/ui';
+import { KeyboardDoneBar } from '../../components/ui';
 import { AREAS } from '../../lib/catalog';
 import { fetchPros, fetchProStats, useQuery } from '../../lib/data';
 import { money } from '../../lib/money';
@@ -25,7 +26,7 @@ export default function Pros() {
     .sort((a, b) => (stats.data?.[b.id]?.rating ?? 0) - (stats.data?.[a.id]?.rating ?? 0));
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
+    <><KeyboardDoneBar /><ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
       refreshControl={<RefreshControl refreshing={pros.loading} onRefresh={() => { pros.reload(); stats.reload(); }} tintColor={c.accent} />}>
       <Title sub="Every licence below was checked by us on the date shown. Price ranges are labour only, before materials.">Checked pros near you</Title>
       <Chips options={KINDS} value={kind} onChange={setKind} />
@@ -61,6 +62,6 @@ export default function Pros() {
         <Body>Get local jobs in the areas you cover. You pay a referral fee only when a job is completed. We check your licence and references before you're listed.</Body>
         <Button title="Join as a pro" onPress={() => router.push('/join')} />
       </Card>
-    </ScrollView>
+    </ScrollView></>
   );
 }

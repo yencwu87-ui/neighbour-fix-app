@@ -1,16 +1,40 @@
 import React from 'react';
 import {
-  ActivityIndicator, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View,
+  ActivityIndicator, InputAccessoryView, Keyboard, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View,
   type TextInputProps, type ViewStyle, type StyleProp,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { radius, space, useColors } from '../lib/theme';
 
+export const DONE_BAR = 'nf-done-bar';
+
+/** A "Done" button that sits on top of the iOS keyboard for every field, including number pads. */
+export function KeyboardDoneBar() {
+  const c = useColors();
+  if (Platform.OS !== 'ios') return null;
+  return (
+    <InputAccessoryView nativeID={DONE_BAR}>
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', backgroundColor: c.card, borderTopWidth: 1, borderTopColor: c.line, paddingHorizontal: 12, paddingVertical: 6 }}>
+        <Pressable onPress={() => Keyboard.dismiss()} accessibilityRole="button" accessibilityLabel="Close keyboard" hitSlop={10}
+          style={{ minHeight: 40, paddingHorizontal: 16, justifyContent: 'center' }}>
+          <Text style={{ color: c.accent, fontWeight: '700', fontSize: 17 }}>Done</Text>
+        </Pressable>
+      </View>
+    </InputAccessoryView>
+  );
+}
+
 export function Screen({ children, scroll = true }: { children: React.ReactNode; scroll?: boolean }) {
   const c = useColors();
-  const body = <View style={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}>{children}</View>;
+  // Tapping any empty space closes the keyboard.
+  const body = (
+    <Pressable onPress={Keyboard.dismiss} accessible={false} style={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}>
+      {children}
+    </Pressable>
+  );
   return (
     <SafeAreaView edges={['left', 'right']} style={{ flex: 1, backgroundColor: c.bg }}>
+      <KeyboardDoneBar />
       {scroll ? <ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets contentInsetAdjustmentBehavior="automatic">{body}</ScrollView> : body}
     </SafeAreaView>
   );
@@ -71,7 +95,10 @@ export function Field({ label, hint, ...props }: TextInputProps & { label: strin
   return (
     <View style={{ gap: 6 }}>
       <Text style={{ fontWeight: '600', fontSize: 14, color: c.ink }}>{label}{hint ? <Text style={{ fontWeight: '400', color: c.muted }}>  {hint}</Text> : null}</Text>
-      <TextInput placeholderTextColor={c.muted} {...props}
+      <TextInput placeholderTextColor={c.muted} inputAccessoryViewID={DONE_BAR}
+        returnKeyType={props.multiline ? 'done' : props.returnKeyType ?? 'done'}
+        submitBehavior={props.multiline ? 'blurAndSubmit' : props.submitBehavior}
+        {...props}
         style={[{ minHeight: props.multiline ? 96 : 48, borderWidth: 1, borderColor: c.line, borderRadius: radius.sm, paddingHorizontal: 12,
           paddingVertical: 10, fontSize: 16, color: c.ink, backgroundColor: c.bg, textAlignVertical: props.multiline ? 'top' : 'center' }, props.style]} />
     </View>

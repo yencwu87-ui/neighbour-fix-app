@@ -2,6 +2,7 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, Text, View } from 'react-native';
 import { Body, Button, Card, Chips, Empty, ExampleTag, Field, H2, Notice, Row, Small, StatusPill, Title, Toggle } from '../../components/ui';
+import { KeyboardDoneBar } from '../../components/ui';
 import { useAuth } from '../../lib/auth';
 import { commission, money, quoteTotals } from '../../lib/money';
 import { supabase } from '../../lib/supabase';
@@ -46,7 +47,7 @@ export default function Board() {
   const shown = jobs.filter((j) => (filter === 'Open' ? !['done', 'cancelled'].includes(j.status) : j.status === filter.toLowerCase()));
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
+    <><KeyboardDoneBar /><ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
       refreshControl={<RefreshControl refreshing={loading} onRefresh={load} tintColor={c.accent} />}>
       <Title sub="Approve pros, match jobs and send itemised quotes.">Board</Title>
 
@@ -84,7 +85,7 @@ export default function Board() {
       ))}
 
       {settings ? <FeeSettings s={settings} onSaved={load} /> : null}
-    </ScrollView>
+    </ScrollView></>
   );
 }
 

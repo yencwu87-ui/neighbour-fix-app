@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, Text, View } from 'react-native';
 import { QuoteView } from '../../components/QuoteView';
 import { Body, Button, Card, Empty, Field, H2, Notice, Row, Small, StatusPill, Title } from '../../components/ui';
+import { KeyboardDoneBar } from '../../components/ui';
 import { useAuth } from '../../lib/auth';
 import { fetchPros } from '../../lib/data';
 import { supabase } from '../../lib/supabase';
@@ -48,7 +49,7 @@ export default function MyJobs() {
   const assigned = isPro ? jobs.filter((j) => j.customer_id !== session.user.id) : [];
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
+    <><KeyboardDoneBar /><ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets style={{ backgroundColor: c.bg }} contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 48 }}
       refreshControl={<RefreshControl refreshing={loading} onRefresh={load} tintColor={c.accent} />}>
       <Title sub={isPro ? 'Jobs assigned to you, and anything you booked yourself.' : 'Your requests, quotes and finished jobs.'}>My jobs</Title>
       {error ? <Notice tone="crit">{error}</Notice> : null}
@@ -74,7 +75,7 @@ export default function MyJobs() {
         <Button title="Sign out" kind="ghost" onPress={signOut} small />
         <DeleteAccount onDeleted={signOut} />
       </View>
-    </ScrollView>
+    </ScrollView></>
   );
 }
 

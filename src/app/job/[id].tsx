@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { QuoteView } from '../../components/QuoteView';
 import { Body, Button, Card, Chips, ExampleTag, Field, H2, Line, Notice, Row, Screen, Small, StatusPill, Title, Toggle } from '../../components/ui';
+import { DONE_BAR } from '../../components/ui';
 import { useAuth } from '../../lib/auth';
 import { fetchPros, fetchSettings, nearbyPros, useQuery } from '../../lib/data';
 import { commission, money, quoteTotals } from '../../lib/money';
@@ -113,8 +114,8 @@ export default function JobScreen() {
         <Small>Labour</Small>
         {labour.map((l, i) => (
           <View key={i} style={{ flexDirection: 'row', gap: 6, alignItems: 'center' }}>
-            <TextInput style={[box, { flex: 3 }]} placeholder="Replace tap cartridge" placeholderTextColor={c.muted} value={l.desc} onChangeText={(v) => setLabour((x) => x.map((y, k) => (k === i ? { ...y, desc: v } : y)))} accessibilityLabel="Labour item" />
-            <TextInput style={box} placeholder="S$" placeholderTextColor={c.muted} keyboardType="decimal-pad" value={l.amount} onChangeText={(v) => setLabour((x) => x.map((y, k) => (k === i ? { ...y, amount: v } : y)))} accessibilityLabel="Labour amount" />
+            <TextInput inputAccessoryViewID={DONE_BAR} style={[box, { flex: 3 }]} placeholder="Replace tap cartridge" placeholderTextColor={c.muted} value={l.desc} onChangeText={(v) => setLabour((x) => x.map((y, k) => (k === i ? { ...y, desc: v } : y)))} accessibilityLabel="Labour item" />
+            <TextInput inputAccessoryViewID={DONE_BAR} style={box} placeholder="S$" placeholderTextColor={c.muted} keyboardType="decimal-pad" value={l.amount} onChangeText={(v) => setLabour((x) => x.map((y, k) => (k === i ? { ...y, amount: v } : y)))} accessibilityLabel="Labour amount" />
             <Button title="✕" kind="ghost" small onPress={() => setLabour((x) => x.filter((_, k) => k !== i))} />
           </View>
         ))}
@@ -125,12 +126,12 @@ export default function JobScreen() {
           return (
             <View key={i} style={{ gap: 6, paddingVertical: 6, borderTopWidth: 1, borderTopColor: c.line }}>
               <View style={{ flexDirection: 'row', gap: 6 }}>
-                <TextInput style={[box, { flex: 2 }]} placeholder="Basin mixer tap" placeholderTextColor={c.muted} value={m.item} onChangeText={set('item')} accessibilityLabel="Part" />
-                <TextInput style={[box, { flex: 2 }]} placeholder="Brand, model, size" placeholderTextColor={c.muted} value={m.spec} onChangeText={set('spec')} accessibilityLabel="Brand or size" />
+                <TextInput inputAccessoryViewID={DONE_BAR} style={[box, { flex: 2 }]} placeholder="Basin mixer tap" placeholderTextColor={c.muted} value={m.item} onChangeText={set('item')} accessibilityLabel="Part" />
+                <TextInput inputAccessoryViewID={DONE_BAR} style={[box, { flex: 2 }]} placeholder="Brand, model, size" placeholderTextColor={c.muted} value={m.spec} onChangeText={set('spec')} accessibilityLabel="Brand or size" />
               </View>
               <View style={{ flexDirection: 'row', gap: 6, alignItems: 'center' }}>
-                <TextInput style={box} placeholder="Qty" placeholderTextColor={c.muted} keyboardType="decimal-pad" value={m.qty} onChangeText={set('qty')} accessibilityLabel="Quantity" />
-                <TextInput style={box} placeholder="S$ each" placeholderTextColor={c.muted} keyboardType="decimal-pad" value={m.unit} onChangeText={set('unit')} accessibilityLabel="Unit price" />
+                <TextInput inputAccessoryViewID={DONE_BAR} style={box} placeholder="Qty" placeholderTextColor={c.muted} keyboardType="decimal-pad" value={m.qty} onChangeText={set('qty')} accessibilityLabel="Quantity" />
+                <TextInput inputAccessoryViewID={DONE_BAR} style={box} placeholder="S$ each" placeholderTextColor={c.muted} keyboardType="decimal-pad" value={m.unit} onChangeText={set('unit')} accessibilityLabel="Unit price" />
                 <Button title="✕" kind="ghost" small onPress={() => setMaterials((x) => x.filter((_, n) => n !== i))} />
               </View>
               <Toggle label="Receipt or price label shared with customer" value={m.receipt} onChange={(v) => setMaterials((x) => x.map((y, n) => (n === i ? { ...y, receipt: v } : y)))} />

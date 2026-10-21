@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { Body, Button, Card, Chips, ExampleTag, H2, Line, Row, Screen, Small, Title } from '../../components/ui';
+import { DONE_BAR } from '../../components/ui';
 import { AREAS, RENO_TASKS, STEPS } from '../../lib/catalog';
 import { fetchPros, fetchRates, tradesOf, useQuery } from '../../lib/data';
 import { money } from '../../lib/money';
@@ -54,7 +55,7 @@ export default function Renovate() {
                   </View>
                   <Text style={{ flex: 1, color: c.ink, fontSize: 15 }}>{t.label}</Text>
                 </Pressable>
-                <TextInput value={qty[t.id]} onChangeText={(v) => { setQty((q) => ({ ...q, [t.id]: v })); setArranged(false); }} keyboardType="decimal-pad"
+                <TextInput inputAccessoryViewID={DONE_BAR} value={qty[t.id]} onChangeText={(v) => { setQty((q) => ({ ...q, [t.id]: v })); setArranged(false); }} keyboardType="decimal-pad"
                   accessibilityLabel={`Quantity for ${t.label}`}
                   style={{ width: 64, minHeight: 40, borderWidth: 1, borderColor: c.line, borderRadius: radius.sm, paddingHorizontal: 8, color: c.ink, fontSize: 16, backgroundColor: c.bg, textAlign: 'right' }} />
                 <Small>{t.unit}</Small>
